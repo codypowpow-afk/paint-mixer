@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paint Mixer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <main class="main">
+    <header class="target">
+      <div class="target-swatch" id="targetSwatch">
+        <input type="color" id="picker" aria-label="Pick a colour" title="Pick a colour">
+      </div>
+      <div class="target-entry">
+        <label for="hex">Hex colour</label>
+        <input id="hex" type="text" spellcheck="false" autocomplete="off" maxlength="9" placeholder="#6B8E4E">
+        <p class="error" id="error" role="alert"></p>
+      </div>
+      <div class="batch">
+        <label for="batch">Batch size</label>
+        <div class="batch-field"><input id="batch" type="number" min="1" max="5000" value="30"><span>ml</span></div>
+      </div>
+    </header>
+    <p class="note" id="note" hidden></p>
+    <section class="recipes" id="recipes" aria-live="polite"></section>
+    <footer class="caveat">
+      Proportions are by volume. They come from a model of typical pigments, and brands differ,
+      so treat each recipe as a starting point: mix, test a swatch, then adjust by eye.
+      Acrylics usually dry a little darker than they look wet.
+    </footer>
+  </main>
+  <aside class="palette">
+    <div class="palette-head">
+      <h2>Your paints</h2>
+      <span id="paintCount"></span>
+    </div>
+    <div class="presets" id="presets"></div>
+    <ul class="paint-list" id="paintList"></ul>
+  </aside>
+</div>
+<script src="js/paints.js"></script>
+<script src="js/mixer.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

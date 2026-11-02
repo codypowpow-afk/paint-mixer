@@ -13,8 +13,8 @@ using System.Windows.Forms;
 [assembly: AssemblyTitle("Paint Mixer")]
 [assembly: AssemblyProduct("Paint Mixer")]
 [assembly: AssemblyDescription("Turns a hex colour into acrylic paint mixing proportions")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 
 namespace PaintMixer
 {

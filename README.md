@@ -1,7 +1,8 @@
 # Paint Mixer
 
-Type a hex colour and get mixing proportions in standard artist acrylics, with alternative ways to reach the same colour.
+Pick or type a colour and get mixing proportions in standard artist acrylics, with alternative ways to reach the same colour.
 
+- **Choosing a colour**: type a hex code, drag on the colour wheel, use the hue, saturation and brightness gradients, or sample any pixel on screen with the eyedropper.
 - **Recipes in parts**, plus percentages and ml for any batch size.
 - **Alternatives**: best recipe, closest colour, fewest paints, no black, cadmium-free and other routes through different pigments.
 - **Your paints**: tick the tubes you own (24 standard colours, or the Basic 8 and Cadmium-free presets) and recipes use only those.

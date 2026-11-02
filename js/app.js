@@ -4,7 +4,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var STORE = 'paintmixer.v1';
   var state = { hex: '#6B8E4E', enabled: PAINTS.map(function (p) { return p.id; }), batch: 30 };
-  var timer = null, lastResult = null;
+  var timer = null, lastResult = null, picker = null;
 
   function load() {
     try {
@@ -135,20 +135,34 @@
     lastResult = Mixer.solve(state.hex, state.enabled, 5);
     renderRecipes();
   }
-  function schedule() {
+  function schedule(delay) {
     clearTimeout(timer);
-    timer = setTimeout(solveNow, 60);
+    timer = setTimeout(solveNow, delay || 60);
   }
 
-  function setHex(hex, fromPicker) {
+  // The swatch follows a drag instantly. Recipes wait for a pause so the drag stays smooth.
+  function setHex(hex, source) {
     state.hex = hex;
     $('targetSwatch').style.background = hex;
-    $('picker').value = hex.toLowerCase();
-    if (fromPicker) $('hex').value = hex;
+    if (source !== 'typed') $('hex').value = hex;
+    if (source !== 'picker') picker.set(hex);
     $('hex').removeAttribute('aria-invalid');
     $('error').textContent = '';
     save();
-    schedule();
+    schedule(source === 'picker' ? 140 : 60);
+  }
+
+  // EyeDropper samples any pixel on screen. It is missing in some browsers, where the wheel remains.
+  function setupDropper() {
+    var button = $('dropper');
+    if (!window.EyeDropper) { button.hidden = true; return; }
+    button.addEventListener('click', function () {
+      new window.EyeDropper().open().then(function (result) {
+        setHex(Mixer.parseHex(result.sRGBHex));
+      }, function (err) {
+        if (err.name !== 'AbortError') $('error').textContent = 'The eyedropper could not start: ' + err.message;
+      });
+    });
   }
 
   function renderPalette() {
@@ -196,7 +210,7 @@
 
     $('hex').addEventListener('input', function () {
       var hex = Mixer.parseHex(this.value);
-      if (hex) { setHex(hex, false); return; }
+      if (hex) { setHex(hex, 'typed'); return; }
       if (this.value.trim().replace('#', '').length >= 6) {
         this.setAttribute('aria-invalid', 'true');
         $('error').textContent = 'Use 3 or 6 hex digits, like #6B8E4E.';
@@ -213,13 +227,14 @@
         this.value = state.hex;
       }
     });
-    $('picker').addEventListener('input', function () { setHex(this.value.toUpperCase(), true); });
+    picker = new window.ColourPicker(function (hex) { setHex(hex, 'picker'); });
+    setupDropper();
     $('batch').value = state.batch;
     $('batch').addEventListener('input', function () {
       var v = parseFloat(this.value);
       if (v > 0) { state.batch = v; save(); renderRecipes(); }
     });
-    setHex(state.hex, true);
+    setHex(state.hex);
   }
   init();
 })();
